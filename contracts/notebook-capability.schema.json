@@ -1,20 +1,24 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Notebook Capability Contract",
+  "description": "Contract for how the JM Labs workspace models NotebookLM capability across primary and fallback execution paths.",
   "type": "object",
   "required": ["primaryMode", "secondaryMode", "operations"],
   "properties": {
     "primaryMode": {
       "type": "string",
+      "description": "Primary execution path. This baseline treats the Claude Desktop MCP as canonical.",
       "enum": ["claude-desktop-mcp"]
     },
     "secondaryMode": {
       "type": "string",
+      "description": "Fallback execution path for orchestration or degraded operation.",
       "enum": ["local-skill-wrapper"]
     },
     "operations": {
       "type": "array",
       "minItems": 5,
+      "description": "Minimum operation surface that every valid Notebook capability implementation must expose.",
       "items": {
         "type": "string",
         "enum": [
@@ -31,4 +35,3 @@
   },
   "additionalProperties": false
 }
-

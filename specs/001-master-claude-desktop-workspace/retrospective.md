@@ -7,6 +7,7 @@
 3. The first capability check treated Codex plugin markers as regex, which broke literal matching.
 4. The first refresh flow could overwrite workspace-specific files and create path drift inside the instance repo.
 5. The initial shared sync logic skipped denylisted files instead of failing hard on policy violations.
+6. The system remained technically sound but too thin in discoverability; several decisions existed only implicitly in code or earlier conversation context.
 
 ## Systemic Changes Applied
 
@@ -15,6 +16,8 @@
 3. Capability checks now use literal matching.
 4. The workspace refresh now refuses to run on a dirty tree unless forced and syncs the full `scripts/` directory without creating root-level duplicates.
 5. Shared sync now fails hard on denylisted files instead of silently skipping them.
+6. Canonical docs, specs, and contracts now expose acceptance gates, limits, edge cases, and trade-offs directly instead of relying on oral context.
+7. The core now carries repo-local skills, agents, and compact architecture assets so the system is more self-sufficient without turning machine configs into verbose documents.
 
 ## Iteration 2 Validation Goal
 
@@ -22,5 +25,6 @@
 - Rerun tests.
 - Rerun capability checks.
 - Rerun Antigravity export.
+- Rerun shared sync preview.
 
-If all four pass, the baseline is considered frozen for this cycle.
+If all five pass, the baseline is considered frozen for this cycle.

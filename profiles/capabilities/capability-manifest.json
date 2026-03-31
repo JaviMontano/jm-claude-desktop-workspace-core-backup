@@ -43,7 +43,11 @@
     "supportsCalendar": true,
     "supportsWorkspaceRuntime": true,
     "supportsHooks": true,
-    "supportsAntigravityExport": true
+    "supportsAntigravityExport": true,
+    "supportsRepoSkills": true,
+    "supportsRepoAgents": true,
+    "supportsDoctorScript": true,
+    "supportsProfileCapture": true
   },
   "notebook": {
     "primaryMode": "claude-desktop-mcp",
@@ -64,4 +68,3 @@
     "gmail -> google-drive -> notebooklm"
   ]
 }
-

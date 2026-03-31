@@ -11,6 +11,11 @@ class CoreContractsTest(unittest.TestCase):
         required = [
             ROOT / "CLAUDE.md",
             ROOT / "CONSTITUTION.md",
+            ROOT / "assets" / "acceptance-matrix.md",
+            ROOT / "assets" / "system-map.md",
+            ROOT / "agents" / "profile-doctor.md",
+            ROOT / "agents" / "shared-sync-guardian.md",
+            ROOT / "agents" / "workspace-architect.md",
             ROOT / "profiles" / "desktop" / "claude_desktop_config.template.json",
             ROOT / "profiles" / "claude" / "settings.template.json",
             ROOT / "profiles" / "claude" / "settings.local.template.json",
@@ -19,6 +24,11 @@ class CoreContractsTest(unittest.TestCase):
             ROOT / "contracts" / "shared-sync-allowlist.json",
             ROOT / "contracts" / "notebook-capability.schema.json",
             ROOT / "references" / "external-inventory.md",
+            ROOT / "scripts" / "capture-local-profiles.sh",
+            ROOT / "scripts" / "doctor.sh",
+            ROOT / "scripts" / "refresh-from-core.sh",
+            ROOT / "skills" / "desktop-parity-auditor" / "SKILL.md",
+            ROOT / "skills" / "workspace-governor" / "SKILL.md",
         ]
         for path in required:
             self.assertTrue(path.exists(), f"missing required path: {path}")
@@ -39,6 +49,9 @@ class CoreContractsTest(unittest.TestCase):
         self.assertEqual(manifest["canonicalEnvironment"], "claude-desktop")
         self.assertEqual(manifest["notebook"]["primaryMode"], "claude-desktop-mcp")
         self.assertIn("query.ask", manifest["notebook"]["operations"])
+        self.assertTrue(manifest["capabilities"]["supportsRepoSkills"])
+        self.assertTrue(manifest["capabilities"]["supportsRepoAgents"])
+        self.assertTrue(manifest["capabilities"]["supportsDoctorScript"])
 
     def test_codex_template_enables_google_and_github(self) -> None:
         config_text = (ROOT / "profiles" / "codex" / "config.template.toml").read_text()
@@ -52,6 +65,9 @@ class CoreContractsTest(unittest.TestCase):
         data = json.loads((ROOT / "contracts" / "shared-sync-allowlist.json").read_text())
         self.assertIn("CLAUDE.md", data["allowlist"])
         self.assertIn("profiles/**", data["allowlist"])
+        self.assertIn("assets/**", data["allowlist"])
+        self.assertIn("skills/**", data["allowlist"])
+        self.assertIn("agents/**", data["allowlist"])
         self.assertIn("local/**", data["denylist"])
 
 

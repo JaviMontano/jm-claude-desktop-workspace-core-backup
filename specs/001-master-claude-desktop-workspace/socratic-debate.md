@@ -47,6 +47,12 @@
 - Objection: Pulling the whole commercial source repo into the core would recreate the original problem.
 - Resolution: Proposal workspaces, onboarding folders, and client outputs remain out of the core; MetodologIA survives only as an optional pack.
 
+## Trade-Offs Accepted
+
+- We deliberately keep runtime templates terse and push explanatory weight into contracts, tests, scripts, and compact assets. That reduces the risk of turning executable config into documentation sludge.
+- We version repo-local skills and agents as source artifacts, but we do not claim that they replace desktop MCP-backed capabilities.
+- We choose a fail-closed sync policy even though it makes downstream sharing stricter, because the cost of accidental leakage is materially higher than the cost of a blocked copy.
+
 ## Freeze Result
 
 No unresolved critical objection remains for the current baseline. The second iteration must rerun refresh plus verification to confirm that the hardened scripts remain stable.

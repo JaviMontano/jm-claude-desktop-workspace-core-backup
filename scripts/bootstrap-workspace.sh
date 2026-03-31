@@ -6,10 +6,24 @@ CORE_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 WORKSPACE_ROOT=${1:-"$HOME/jm-claude-desktop-workspace"}
 BOOTSTRAP_INCLUDE_PACKS=${BOOTSTRAP_INCLUDE_PACKS:-0}
 
+case "$WORKSPACE_ROOT" in
+  /*) ;;
+  *)
+    echo "usage: bootstrap-workspace.sh /absolute/path/to/workspace-instance"
+    exit 1
+    ;;
+esac
+
+if [ "$WORKSPACE_ROOT" = "$CORE_ROOT" ]; then
+  echo "Refusing to bootstrap the workspace into the core repository."
+  exit 1
+fi
+
 echo "Bootstrapping workspace at: $WORKSPACE_ROOT"
 
 mkdir -p \
   "$WORKSPACE_ROOT/.remember" \
+  "$WORKSPACE_ROOT/local" \
   "$WORKSPACE_ROOT/workspaces" \
   "$WORKSPACE_ROOT/local/profiles/claude" \
   "$WORKSPACE_ROOT/local/profiles/desktop" \
@@ -45,6 +59,9 @@ for item in \
   profiles \
   contracts \
   references \
+  assets \
+  skills \
+  agents \
   scripts \
   tests \
   specs \
@@ -60,27 +77,62 @@ if [ "$BOOTSTRAP_INCLUDE_PACKS" = "1" ] && [ -e "$CORE_ROOT/packs" ]; then
 fi
 
 if [ ! -f "$WORKSPACE_ROOT/README.md" ]; then
-  cp "$CORE_ROOT/README.md" "$WORKSPACE_ROOT/README.md"
+  cat > "$WORKSPACE_ROOT/README.md" <<EOF
+# JM Labs Claude Desktop Workspace
+
+Local operator workspace bootstrapped from \`${CORE_ROOT##*/}\`.
+
+- Core source: \`$CORE_ROOT\`
+- Refresh from core: \`sh scripts/refresh-from-core.sh $CORE_ROOT\`
+- Re-capture local overlays: \`sh scripts/capture-local-profiles.sh $WORKSPACE_ROOT\`
+- Validate end to end: \`sh scripts/doctor.sh\`
+EOF
 fi
 
 if [ ! -f "$WORKSPACE_ROOT/session-state.json" ]; then
   cp "$CORE_ROOT/session-state.template.json" "$WORKSPACE_ROOT/session-state.json"
 fi
 
-for file in tasklog.md changelog.md decision-log.md QA-PLAN.md; do
-  if [ ! -f "$WORKSPACE_ROOT/$file" ]; then
-    : > "$WORKSPACE_ROOT/$file"
-  fi
-done
+if [ ! -f "$WORKSPACE_ROOT/tasklog.md" ]; then
+  cat > "$WORKSPACE_ROOT/tasklog.md" <<'EOF'
+# Task Log
 
-DESKTOP_CFG="$HOME/Library/Application Support/Claude/claude_desktop_config.json"
-CLAUDE_SETTINGS="$HOME/.claude/settings.json"
-CLAUDE_SETTINGS_LOCAL="$HOME/.claude/settings.local.json"
-CODEX_CONFIG="$HOME/.codex/config.toml"
+- Workspace bootstrapped from the canonical core.
+EOF
+fi
 
-[ -f "$DESKTOP_CFG" ] && cp "$DESKTOP_CFG" "$WORKSPACE_ROOT/local/profiles/desktop/claude_desktop_config.json"
-[ -f "$CLAUDE_SETTINGS" ] && cp "$CLAUDE_SETTINGS" "$WORKSPACE_ROOT/local/profiles/claude/settings.json"
-[ -f "$CLAUDE_SETTINGS_LOCAL" ] && cp "$CLAUDE_SETTINGS_LOCAL" "$WORKSPACE_ROOT/local/profiles/claude/settings.local.json"
-[ -f "$CODEX_CONFIG" ] && cp "$CODEX_CONFIG" "$WORKSPACE_ROOT/local/profiles/codex/config.toml"
+if [ ! -f "$WORKSPACE_ROOT/changelog.md" ]; then
+  cat > "$WORKSPACE_ROOT/changelog.md" <<'EOF'
+# Changelog
+
+## Unreleased
+
+- Workspace bootstrapped from the canonical core.
+EOF
+fi
+
+if [ ! -f "$WORKSPACE_ROOT/decision-log.md" ]; then
+  cat > "$WORKSPACE_ROOT/decision-log.md" <<'EOF'
+# Decision Log
+
+- Claude Desktop remains the canonical runtime.
+- Local overlays remain git-ignored.
+EOF
+fi
+
+if [ ! -f "$WORKSPACE_ROOT/QA-PLAN.md" ]; then
+  cat > "$WORKSPACE_ROOT/QA-PLAN.md" <<'EOF'
+# QA Plan
+
+1. Run `sh scripts/check-capabilities.sh`.
+2. Run `python3 -m unittest discover -s tests`.
+3. Run `sh scripts/export-antigravity.sh`.
+4. Run `sh scripts/sync-shared.sh /tmp/jm-shared-sync-check`.
+EOF
+fi
+
+if [ -f "$WORKSPACE_ROOT/scripts/capture-local-profiles.sh" ]; then
+  sh "$WORKSPACE_ROOT/scripts/capture-local-profiles.sh" "$WORKSPACE_ROOT"
+fi
 
 echo "Workspace bootstrap complete."

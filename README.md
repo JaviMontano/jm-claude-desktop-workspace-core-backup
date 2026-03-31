@@ -1,39 +1,62 @@
 # JM Labs Master Claude Desktop Workspace Core
 
-Canonical runtime for the JM Labs Claude Desktop environment.
+Canonical runtime, contracts, and governance layer for the JM Labs Claude Desktop system.
 
-This repository separates reusable runtime from local operator state. It is the source of truth for:
+## What This Repo Guarantees
 
-- Claude Desktop runtime assets
-- Desktop, Claude, and Codex profile templates
-- Contracts for capabilities and shared sync
-- Optional domain packs
-- Antigravity export logic
+- Reusable runtime is separated from operator-local state.
+- Claude Desktop remains the canonical environment definition.
+- NotebookLM, Tessl, and Playwright stay modeled as first-class desktop capabilities.
+- Shared sync stays allowlist-only and fails closed on denied content.
+- Antigravity export remains explicitly derived and cannot silently redefine desktop-only behavior.
 
-## Structure
+## What This Repo Is Not
 
-- `CLAUDE.md`: core operating guide
-- `_flows`, `_scripts`, `_templates`, `_index-*`: reusable ACC runtime extracted from the source workspace
-- `profiles/`: desktop, Claude, Codex, and capability templates
-- `contracts/`: machine-readable rules for sync and Notebook capability
-- `packs/`: optional domain packs, currently seeded with the MetodologIA proposal engine
-- `scripts/`: bootstrap, validation, export, and sync helpers
-- `references/`: external inventory and source references
-- `specs/001-master-claude-desktop-workspace/`: SDD track for this buildout
-- `tests/`: repository contract tests
+- Not a live operator workspace.
+- Not a secret store.
+- Not a multi-user control plane.
+- Not a dumping ground for proposal outputs, session residue, or client-specific workspaces.
 
-## Quick Start
+## Repository Map
 
-1. Run `sh scripts/bootstrap-workspace.sh /absolute/path/to/workspace-instance`.
-   Optional: set `BOOTSTRAP_INCLUDE_PACKS=1` to seed the optional domain packs into the target workspace.
-2. Review or update local snapshots inside the target workspace under `local/profiles/`.
-3. Run `scripts/check-capabilities.sh`.
-4. Run `python3 -m unittest discover -s tests`.
-5. When needed, export the portable view with `sh scripts/export-antigravity.sh`.
+- `CLAUDE.md`: operating contract for agents working on the core.
+- `CONSTITUTION.md`: non-negotiable system rules and failure boundaries.
+- `_flows`, `_scripts`, `_templates`, `_index-*`, `_versions.md`: extracted reusable runtime.
+- `profiles/`: desktop, Claude, Codex, capability, and account templates.
+- `contracts/`: sync policy and Notebook capability schema.
+- `assets/`: compact architectural and acceptance artifacts for fast orientation.
+- `skills/`: repo-local skills for governance and parity work.
+- `agents/`: reusable agent definitions for architecture, profile auditing, and sync review.
+- `packs/`: optional domain packs; core identity must not depend on them.
+- `scripts/`: bootstrap, refresh, profile capture, doctor, validation, export, and sync helpers.
+- `references/`: upstream inventory and source anchors.
+- `specs/001-master-claude-desktop-workspace/`: SDD track with rationale, decisions, and validation intent.
+- `tests/`: contract tests for the core surface.
 
-## Design Rules
+## Operating Lifecycle
 
-- Claude Desktop is canonical.
-- Antigravity is a derived compatibility layer.
-- Secrets and operator auth never belong in git.
-- Domain packs stay optional and isolated from the core runtime.
+1. Bootstrap a workspace with `sh scripts/bootstrap-workspace.sh /absolute/path/to/workspace-instance`.
+2. Capture or refresh live local overlays with `sh scripts/capture-local-profiles.sh /absolute/path/to/workspace-instance`.
+3. Run `sh scripts/doctor.sh` from the core or workspace root.
+4. Export the portable view with `sh scripts/export-antigravity.sh`.
+5. Sync curated artifacts downstream with `sh scripts/sync-shared.sh /absolute/path/to/target-repo`.
+
+`BOOTSTRAP_INCLUDE_PACKS=1` keeps optional packs. `REFRESH_INCLUDE_PACKS=0` allows a workspace refresh without pack content. `DOCTOR_CAPTURE_PROFILES=1` lets the doctor refresh local snapshots before validating.
+
+## Acceptance Gate
+
+This baseline is acceptable only when all of the following are true:
+
+- `python3 -m unittest discover -s tests` passes.
+- `sh scripts/check-capabilities.sh` passes against the live machine.
+- `sh scripts/doctor.sh` passes end to end.
+- The portable Antigravity export completes and generates compatibility metadata.
+- Shared sync copies only allowlisted material and aborts on denied matches.
+
+## Design Decisions
+
+- Desktop-first: Claude Desktop defines runtime truth because the real environment already exposes required MCPs there.
+- Core vs instance split: the core stays shareable; the workspace carries local overlays and working state.
+- Fail-closed sync: it is cheaper to stop a sync than to recover from leaked local state.
+- Optional packs: MetodologIA and future business packs remain available without contaminating JM Labs core identity.
+- Portable, not fake-portable: Antigravity receives only artifacts that remain valid outside Claude Desktop.

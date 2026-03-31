@@ -6,6 +6,16 @@ PROJECT_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 TARGET_ROOT=${1:?"usage: sync-shared.sh /absolute/path/to/target-repo"}
 ALLOWLIST_JSON="$PROJECT_ROOT/contracts/shared-sync-allowlist.json"
 
+case "$TARGET_ROOT" in
+  /*) ;;
+  *)
+    echo "usage: sync-shared.sh /absolute/path/to/target-repo"
+    exit 1
+    ;;
+esac
+
+mkdir -p "$TARGET_ROOT"
+
 python3 - "$PROJECT_ROOT" "$TARGET_ROOT" "$ALLOWLIST_JSON" <<'PY'
 import json
 import pathlib
@@ -15,6 +25,11 @@ import sys
 project_root = pathlib.Path(sys.argv[1])
 target_root = pathlib.Path(sys.argv[2])
 allowlist_path = pathlib.Path(sys.argv[3])
+project_root_resolved = project_root.resolve()
+target_root_resolved = target_root.resolve()
+
+if target_root_resolved == project_root_resolved or project_root_resolved in target_root_resolved.parents:
+    raise RuntimeError("target root must be outside the source repository")
 
 data = json.loads(allowlist_path.read_text())
 allowlist = data["allowlist"]
