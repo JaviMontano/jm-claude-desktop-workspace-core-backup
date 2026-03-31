@@ -15,6 +15,11 @@
   },
   "por_confirmar_open": [],
   "recent_domains": [],
+  "current_task_id": null,
+  "current_task_path": null,
+  "last_input_at": null,
+  "last_resolution_mode": null,
+  "pending_ambiguous_matches": [],
   "preferences": {
     "default_mode": "guided",
     "language": "es",

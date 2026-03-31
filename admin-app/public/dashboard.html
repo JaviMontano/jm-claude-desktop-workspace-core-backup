@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JM Labs Admin Console</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="rail">
+      <div class="brand">
+        <span class="brand-kicker">JM Labs</span>
+        <h1>Task admin console</h1>
+        <p>Orquestación persistente, RAG memory y control local del entorno.</p>
+      </div>
+
+      <section class="panel rail-panel">
+        <h2>Acciones</h2>
+        <button id="refresh-all" class="action primary">Refrescar</button>
+        <button id="run-repair" class="action">Reparar dashboard</button>
+        <a class="action ghost" href="/api/summary" target="_blank" rel="noreferrer">Ver summary JSON</a>
+      </section>
+
+      <section class="panel rail-panel">
+        <h2>Intake</h2>
+        <label class="field">
+          <span>Título opcional</span>
+          <input id="intake-title" type="text" placeholder="Nuevo request o intención">
+        </label>
+        <label class="field">
+          <span>Input</span>
+          <textarea id="intake-text" rows="7" placeholder="Pega aquí el nuevo input para que el sistema lo resuelva."></textarea>
+        </label>
+        <div class="action-row">
+          <button id="submit-intake" class="action primary">Registrar input</button>
+          <button id="force-new" class="action">Forzar nueva tarea</button>
+        </div>
+      </section>
+
+      <section class="panel rail-panel">
+        <h2>Health</h2>
+        <div id="health-summary" class="stack tight"></div>
+      </section>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <span class="eyebrow">Local-first admin</span>
+          <h2>Dashboard sincronizado con disco</h2>
+        </div>
+        <div id="summary-cards" class="summary-cards"></div>
+      </header>
+
+      <section class="grid">
+        <section class="panel">
+          <div class="section-head">
+            <h3>Tareas abiertas</h3>
+            <span id="open-count" class="count-badge">0</span>
+          </div>
+          <div id="open-tasks" class="task-list"></div>
+        </section>
+
+        <section class="panel">
+          <div class="section-head">
+            <h3>Pendientes ambiguas</h3>
+            <span id="pending-count" class="count-badge">0</span>
+          </div>
+          <div id="pending-tasks" class="task-list"></div>
+        </section>
+
+        <section class="panel wide">
+          <div class="section-head">
+            <h3>Detalle de tarea</h3>
+            <span id="detail-task-id" class="count-badge">—</span>
+          </div>
+          <div id="task-detail" class="detail-empty">Selecciona una tarea para ver su detalle.</div>
+        </section>
+
+        <section class="panel">
+          <div class="section-head">
+            <h3>Histórico done</h3>
+            <span id="done-count" class="count-badge">0</span>
+          </div>
+          <div id="done-tasks" class="task-list compact"></div>
+        </section>
+
+        <section class="panel">
+          <div class="section-head">
+            <h3>Session state</h3>
+          </div>
+          <pre id="session-state" class="code-block"></pre>
+        </section>
+
+        <section class="panel">
+          <div class="section-head">
+            <h3>Config MCP / plugins</h3>
+          </div>
+          <pre id="config-panel" class="code-block"></pre>
+        </section>
+
+        <section class="panel wide">
+          <div class="section-head">
+            <h3>Filesystem relevante</h3>
+          </div>
+          <pre id="filesystem-panel" class="code-block"></pre>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

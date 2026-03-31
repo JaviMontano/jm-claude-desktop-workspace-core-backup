@@ -19,6 +19,20 @@ Estos agentes coordinan pipelines completos y nunca ejecutan trabajo directament
 
 ---
 
+## JM Labs Local Runtime Specialists
+
+Agentes repo-locales para la operacion del workspace persistente y la mini app
+admin.
+
+| Agente | Plugin | Rol | Activacion |
+|--------|--------|-----|------------|
+| **task-resolver** | JM | Decide `new`, `resume` o `ambiguous` para inputs nuevos | Intake de tareas, matching de contexto |
+| **memory-curator** | JM | Preserva `rag-memory-*` y conversa la evidencia del input | Recuperacion de contexto, adjuntos efimeros |
+| **task-closer** | JM | Audita Definition of Done antes del cierre | Confirmacion de terminacion |
+| **dashboard-operator** | JM | Diagnostica y repara la mini app admin local | `dashboard-doctor`, `dashboard-repair`, deriva de UI |
+
+---
+
 ## Nivel 2: Domain Specialists
 
 ### SA — Software Architecture Specialists (66 agentes)

@@ -1,0 +1,9 @@
+#!/bin/sh
+set -eu
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+PROJECT_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
+WORKSPACE_ROOT=${1:-"$PROJECT_ROOT"}
+ADMIN_APP_PORT=${ADMIN_APP_PORT:-4173}
+
+JM_WORKSPACE_ROOT="$WORKSPACE_ROOT" ADMIN_APP_PORT="$ADMIN_APP_PORT" node "$WORKSPACE_ROOT/admin-app/server.mjs"

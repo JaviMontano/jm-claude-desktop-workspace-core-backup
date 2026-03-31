@@ -56,6 +56,18 @@
 
 ---
 
+## JM Labs Local Runtime
+
+| Skill | Plugin | Comando | Descripcion |
+|-------|--------|---------|-------------|
+| task-orchestration-governor | JM | - | Gobernar intake, matching, `workspaces/tasks` y `tasklog.md` |
+| rag-memory-curator | JM | - | Preservar `rag-memory-*` para recuperacion durable |
+| admin-dashboard-operator | JM | - | Operar, diagnosticar y reparar la mini app admin local |
+| workspace-governor | JM | - | Decidir destino core vs workspace vs local-only |
+| desktop-parity-auditor | JM | - | Verificar paridad de runtime, dashboard y salud local |
+
+---
+
 ## Project Management
 
 | Skill | Plugin | Comando | Descripcion |

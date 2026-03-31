@@ -51,6 +51,7 @@ for item in \
   contracts \
   references \
   assets \
+  admin-app \
   skills \
   agents \
   scripts \
@@ -74,6 +75,10 @@ rm -f \
 
 if [ "$REFRESH_CAPTURE_PROFILES" = "1" ] && [ -f "$WORKSPACE_ROOT/scripts/capture-local-profiles.sh" ]; then
   sh "$WORKSPACE_ROOT/scripts/capture-local-profiles.sh" "$WORKSPACE_ROOT"
+fi
+
+if [ -f "$WORKSPACE_ROOT/scripts/init-task-orchestrator.sh" ]; then
+  sh "$WORKSPACE_ROOT/scripts/init-task-orchestrator.sh" "$WORKSPACE_ROOT"
 fi
 
 echo "Workspace refresh complete."

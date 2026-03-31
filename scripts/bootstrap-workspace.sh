@@ -34,12 +34,14 @@ if [ ! -f "$WORKSPACE_ROOT/.gitignore" ]; then
 session-state.json
 .remember/**
 workspaces/**
+local/
 local/profiles/**
 .env
 .env.*
 *.local
 adapters/antigravity/output/
 reports/
+tasklog.md
 EOF
 fi
 
@@ -60,6 +62,7 @@ for item in \
   contracts \
   references \
   assets \
+  admin-app \
   skills \
   agents \
   scripts \
@@ -91,14 +94,6 @@ fi
 
 if [ ! -f "$WORKSPACE_ROOT/session-state.json" ]; then
   cp "$CORE_ROOT/session-state.template.json" "$WORKSPACE_ROOT/session-state.json"
-fi
-
-if [ ! -f "$WORKSPACE_ROOT/tasklog.md" ]; then
-  cat > "$WORKSPACE_ROOT/tasklog.md" <<'EOF'
-# Task Log
-
-- Workspace bootstrapped from the canonical core.
-EOF
 fi
 
 if [ ! -f "$WORKSPACE_ROOT/changelog.md" ]; then
@@ -133,6 +128,10 @@ fi
 
 if [ -f "$WORKSPACE_ROOT/scripts/capture-local-profiles.sh" ]; then
   sh "$WORKSPACE_ROOT/scripts/capture-local-profiles.sh" "$WORKSPACE_ROOT"
+fi
+
+if [ -f "$WORKSPACE_ROOT/scripts/init-task-orchestrator.sh" ]; then
+  sh "$WORKSPACE_ROOT/scripts/init-task-orchestrator.sh" "$WORKSPACE_ROOT"
 fi
 
 echo "Workspace bootstrap complete."

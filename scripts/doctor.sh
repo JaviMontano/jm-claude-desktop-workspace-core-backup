@@ -43,6 +43,10 @@ fi
   python3 -m unittest discover -s tests
 )
 
+if [ "$MODE" = "workspace" ] && [ -f "$PROJECT_ROOT/scripts/dashboard-doctor.sh" ]; then
+  sh "$PROJECT_ROOT/scripts/dashboard-doctor.sh" "$PROJECT_ROOT"
+fi
+
 sh "$PROJECT_ROOT/scripts/export-antigravity.sh" "$EXPORT_ROOT"
 sh "$PROJECT_ROOT/scripts/sync-shared.sh" "$SYNC_ROOT"
 

@@ -32,6 +32,7 @@ portable_patterns = [
     "contracts",
     "references",
     "assets",
+    "admin-app",
     "skills",
     "agents",
 ]
@@ -115,6 +116,7 @@ Claude Desktop remains canonical.
 Portable capabilities:
 - core rules and contracts
 - compact architecture assets
+- local admin app source and static dashboard shell
 - repo-local skills and agents as source artifacts
 - exported skills and agents metadata
 
@@ -133,6 +135,7 @@ cat > "$TARGET_ROOT/compatibility-report.md" <<'EOF'
 
 - Governance files and contracts
 - References and compact architecture assets
+- Local admin app runtime source without task data
 - Repo-local skills and agents as portable source artifacts
 - Domain pack skills that do not require Claude Desktop runtime
 

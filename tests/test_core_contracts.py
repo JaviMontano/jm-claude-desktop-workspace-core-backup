@@ -11,10 +11,22 @@ class CoreContractsTest(unittest.TestCase):
         required = [
             ROOT / "CLAUDE.md",
             ROOT / "CONSTITUTION.md",
+            ROOT / "admin-app" / "server.mjs",
+            ROOT / "admin-app" / "public" / "dashboard.html",
+            ROOT / "admin-app" / "public" / "app.js",
+            ROOT / "admin-app" / "public" / "styles.css",
+            ROOT / "admin-app" / "lib" / "cli.mjs",
+            ROOT / "admin-app" / "lib" / "config.mjs",
+            ROOT / "admin-app" / "lib" / "render.mjs",
+            ROOT / "admin-app" / "lib" / "store.mjs",
             ROOT / "assets" / "acceptance-matrix.md",
             ROOT / "assets" / "system-map.md",
+            ROOT / "agents" / "dashboard-operator.md",
+            ROOT / "agents" / "memory-curator.md",
             ROOT / "agents" / "profile-doctor.md",
             ROOT / "agents" / "shared-sync-guardian.md",
+            ROOT / "agents" / "task-closer.md",
+            ROOT / "agents" / "task-resolver.md",
             ROOT / "agents" / "workspace-architect.md",
             ROOT / "profiles" / "desktop" / "claude_desktop_config.template.json",
             ROOT / "profiles" / "claude" / "settings.template.json",
@@ -25,9 +37,23 @@ class CoreContractsTest(unittest.TestCase):
             ROOT / "contracts" / "notebook-capability.schema.json",
             ROOT / "references" / "external-inventory.md",
             ROOT / "scripts" / "capture-local-profiles.sh",
+            ROOT / "scripts" / "dashboard-build.sh",
+            ROOT / "scripts" / "dashboard-doctor.sh",
+            ROOT / "scripts" / "dashboard-repair.sh",
+            ROOT / "scripts" / "dashboard-serve.sh",
             ROOT / "scripts" / "doctor.sh",
+            ROOT / "scripts" / "init-task-orchestrator.sh",
             ROOT / "scripts" / "refresh-from-core.sh",
+            ROOT / "scripts" / "task-close.sh",
+            ROOT / "scripts" / "task-index-sync.sh",
+            ROOT / "scripts" / "task-intake.sh",
+            ROOT / "scripts" / "task-open.sh",
+            ROOT / "scripts" / "task-resume.sh",
+            ROOT / "scripts" / "tasklog-sync.sh",
+            ROOT / "skills" / "admin-dashboard-operator" / "SKILL.md",
             ROOT / "skills" / "desktop-parity-auditor" / "SKILL.md",
+            ROOT / "skills" / "rag-memory-curator" / "SKILL.md",
+            ROOT / "skills" / "task-orchestration-governor" / "SKILL.md",
             ROOT / "skills" / "workspace-governor" / "SKILL.md",
         ]
         for path in required:
@@ -66,9 +92,19 @@ class CoreContractsTest(unittest.TestCase):
         self.assertIn("CLAUDE.md", data["allowlist"])
         self.assertIn("profiles/**", data["allowlist"])
         self.assertIn("assets/**", data["allowlist"])
+        self.assertIn("admin-app/**", data["allowlist"])
         self.assertIn("skills/**", data["allowlist"])
         self.assertIn("agents/**", data["allowlist"])
         self.assertIn("local/**", data["denylist"])
+        self.assertIn("workspaces/**", data["denylist"])
+
+    def test_session_state_template_has_task_fields(self) -> None:
+        data = json.loads((ROOT / "session-state.template.json").read_text())
+        self.assertIn("current_task_id", data)
+        self.assertIn("current_task_path", data)
+        self.assertIn("last_input_at", data)
+        self.assertIn("last_resolution_mode", data)
+        self.assertIn("pending_ambiguous_matches", data)
 
 
 if __name__ == "__main__":
