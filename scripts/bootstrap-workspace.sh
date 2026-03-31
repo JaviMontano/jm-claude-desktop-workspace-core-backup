@@ -4,6 +4,7 @@ set -eu
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 CORE_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 WORKSPACE_ROOT=${1:-"$HOME/jm-claude-desktop-workspace"}
+BOOTSTRAP_INCLUDE_PACKS=${BOOTSTRAP_INCLUDE_PACKS:-0}
 
 echo "Bootstrapping workspace at: $WORKSPACE_ROOT"
 
@@ -14,10 +15,23 @@ mkdir -p \
   "$WORKSPACE_ROOT/local/profiles/desktop" \
   "$WORKSPACE_ROOT/local/profiles/codex"
 
+if [ ! -f "$WORKSPACE_ROOT/.gitignore" ]; then
+  cat > "$WORKSPACE_ROOT/.gitignore" <<'EOF'
+session-state.json
+.remember/**
+workspaces/**
+local/profiles/**
+.env
+.env.*
+*.local
+adapters/antigravity/output/
+reports/
+EOF
+fi
+
 for item in \
   CLAUDE.md \
   CONSTITUTION.md \
-  README.md \
   _flows \
   _scripts \
   _templates \
@@ -28,7 +42,6 @@ for item in \
   _index-workflows.md \
   _versions.md \
   session-state.template.json \
-  packs \
   profiles \
   contracts \
   references \
@@ -41,6 +54,14 @@ do
     rsync -a "$CORE_ROOT/$item" "$WORKSPACE_ROOT/"
   fi
 done
+
+if [ "$BOOTSTRAP_INCLUDE_PACKS" = "1" ] && [ -e "$CORE_ROOT/packs" ]; then
+  rsync -a "$CORE_ROOT/packs" "$WORKSPACE_ROOT/"
+fi
+
+if [ ! -f "$WORKSPACE_ROOT/README.md" ]; then
+  cp "$CORE_ROOT/README.md" "$WORKSPACE_ROOT/README.md"
+fi
 
 if [ ! -f "$WORKSPACE_ROOT/session-state.json" ]; then
   cp "$CORE_ROOT/session-state.template.json" "$WORKSPACE_ROOT/session-state.json"

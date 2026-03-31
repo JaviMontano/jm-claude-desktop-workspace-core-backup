@@ -20,7 +20,6 @@ data = json.loads(allowlist_path.read_text())
 allowlist = data["allowlist"]
 denylist = data["denylist"]
 copied = 0
-skipped = 0
 
 def is_denied(relative_path: pathlib.PurePosixPath) -> bool:
     return any(relative_path.match(pattern) for pattern in denylist)
@@ -39,15 +38,13 @@ for pattern in allowlist:
 for src in sorted(candidates):
     rel = pathlib.PurePosixPath(src.relative_to(project_root).as_posix())
     if is_denied(rel):
-        skipped += 1
-        continue
+        raise RuntimeError(f"denylist match blocked: {rel}")
     dest = target_root / rel
     dest.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(src, dest)
     copied += 1
 
-print(f"copied={copied} skipped={skipped}")
+print(f"copied={copied}")
 PY
 
 echo "Allowlisted artifacts copied into $TARGET_ROOT"
-
