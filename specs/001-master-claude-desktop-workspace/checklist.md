@@ -9,5 +9,4 @@
 - [x] Add scripts and repository tests
 - [x] Bootstrap and verify the local workspace instance
 - [x] Export Antigravity view
-- [ ] Push both repos
-
+- [x] Push both repos
