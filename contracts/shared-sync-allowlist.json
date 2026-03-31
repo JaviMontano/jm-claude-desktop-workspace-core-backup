@@ -1,0 +1,41 @@
+{
+  "version": "1.0.0",
+  "allowlist": [
+    "CLAUDE.md",
+    "CONSTITUTION.md",
+    "README.md",
+    "_flows/**",
+    "_scripts/**",
+    "_templates/**",
+    "_index-agents.md",
+    "_index-commands.md",
+    "_index-routing.md",
+    "_index-skills.md",
+    "_index-workflows.md",
+    "_versions.md",
+    "profiles/**",
+    "contracts/**",
+    "references/**",
+    "packs/metodologia-proposal-engine/**",
+    "scripts/bootstrap-workspace.sh",
+    "scripts/check-capabilities.sh",
+    "scripts/export-antigravity.sh",
+    "scripts/sync-shared.sh",
+    "tests/**",
+    "specs/**"
+  ],
+  "denylist": [
+    ".git/**",
+    "local/**",
+    ".remember/**",
+    "workspaces/**",
+    "**/session-state.json",
+    "**/.env",
+    "**/.env.*",
+    "**/*.local",
+    "**/outputs/**",
+    "**/research/**",
+    "**/verification/**"
+  ]
+}
+

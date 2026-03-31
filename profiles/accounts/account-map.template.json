@@ -1,0 +1,23 @@
+{
+  "operator": {
+    "name": "Javier Montano",
+    "brand": "JM Labs"
+  },
+  "github": {
+    "primaryAccount": "JaviMontano",
+    "sharedWithWorkspace": true
+  },
+  "google": {
+    "primaryIdentity": "same-operator-identity",
+    "sharedDriveAndNotebook": true
+  },
+  "notebooklm": {
+    "authMode": "local-browser-session-or-mcp-managed",
+    "sharedWithGoogleIdentity": true
+  },
+  "notes": [
+    "This file is a template and must not contain tokens.",
+    "Concrete auth material belongs only in local overlays."
+  ]
+}
+

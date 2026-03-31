@@ -1,0 +1,53 @@
+#!/bin/sh
+set -eu
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+PROJECT_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
+TARGET_ROOT=${1:?"usage: sync-shared.sh /absolute/path/to/target-repo"}
+ALLOWLIST_JSON="$PROJECT_ROOT/contracts/shared-sync-allowlist.json"
+
+python3 - "$PROJECT_ROOT" "$TARGET_ROOT" "$ALLOWLIST_JSON" <<'PY'
+import json
+import pathlib
+import shutil
+import sys
+
+project_root = pathlib.Path(sys.argv[1])
+target_root = pathlib.Path(sys.argv[2])
+allowlist_path = pathlib.Path(sys.argv[3])
+
+data = json.loads(allowlist_path.read_text())
+allowlist = data["allowlist"]
+denylist = data["denylist"]
+copied = 0
+skipped = 0
+
+def is_denied(relative_path: pathlib.PurePosixPath) -> bool:
+    return any(relative_path.match(pattern) for pattern in denylist)
+
+
+candidates = set()
+for pattern in allowlist:
+    for src in project_root.glob(pattern):
+        if src.is_file():
+            candidates.add(src)
+        elif src.is_dir():
+            for nested in src.rglob("*"):
+                if nested.is_file():
+                    candidates.add(nested)
+
+for src in sorted(candidates):
+    rel = pathlib.PurePosixPath(src.relative_to(project_root).as_posix())
+    if is_denied(rel):
+        skipped += 1
+        continue
+    dest = target_root / rel
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(src, dest)
+    copied += 1
+
+print(f"copied={copied} skipped={skipped}")
+PY
+
+echo "Allowlisted artifacts copied into $TARGET_ROOT"
+

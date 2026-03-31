@@ -1,0 +1,67 @@
+{
+  "version": "1.0.0",
+  "canonicalEnvironment": "claude-desktop",
+  "operatorModel": "single-operator-single-identity",
+  "desktopMcpServers": ["playwright", "notebooklm", "tessl"],
+  "claudePlugins": {
+    "required": [
+      "context7@claude-plugins-official",
+      "github@claude-plugins-official",
+      "playwright@claude-plugins-official",
+      "commit-commands@claude-plugins-official",
+      "claude-md-management@claude-plugins-official",
+      "pr-review-toolkit@claude-plugins-official",
+      "agent-sdk-dev@claude-plugins-official",
+      "skill-creator@claude-plugins-official"
+    ],
+    "optional": [
+      "frontend-design@claude-plugins-official",
+      "stripe@claude-plugins-official",
+      "metodologia-discovery-framework@jm-discovery-plugins",
+      "pm-project-framework@jm-discovery-plugins",
+      "scriba@prolipa-plugins",
+      "sdf@local-desktop-app-uploads",
+      "sofka-tariff-plugin@local-desktop-app-uploads"
+    ]
+  },
+  "codexPlugins": {
+    "required": [
+      "github@openai-curated",
+      "gmail@openai-curated",
+      "google-drive@openai-curated",
+      "google-calendar@openai-curated"
+    ]
+  },
+  "capabilities": {
+    "supportsClaudePlugins": true,
+    "supportsClaudeMCP": true,
+    "supportsCodexApps": true,
+    "supportsNotebook": true,
+    "supportsGitHub": true,
+    "supportsGmail": true,
+    "supportsDrive": true,
+    "supportsCalendar": true,
+    "supportsWorkspaceRuntime": true,
+    "supportsHooks": true,
+    "supportsAntigravityExport": true
+  },
+  "notebook": {
+    "primaryMode": "claude-desktop-mcp",
+    "secondaryMode": "local-skill-wrapper",
+    "operations": [
+      "auth.status",
+      "library.list",
+      "library.search",
+      "library.add",
+      "library.activate",
+      "query.ask",
+      "query.followup"
+    ]
+  },
+  "synergies": [
+    "google-drive -> notebooklm -> github",
+    "google-drive -> notebooklm -> gmail",
+    "gmail -> google-drive -> notebooklm"
+  ]
+}
+

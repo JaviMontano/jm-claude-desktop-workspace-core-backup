@@ -1,0 +1,56 @@
+{
+  "env": {},
+  "permissions": {
+    "allow": [
+      "Read({{HOME}}/**)",
+      "Bash(git *)",
+      "Bash(ls *)",
+      "Bash(find *)",
+      "Bash(du *)",
+      "Bash(wc *)",
+      "Bash(claude *)",
+      "Bash(python3 *)",
+      "Bash(gh *)",
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(cat *)",
+      "Bash(head *)",
+      "Bash(mkdir *)",
+      "Bash(cp *)",
+      "Bash(mv *)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:docs.anthropic.com)"
+    ]
+  },
+  "mcpServers": {
+    "tessl": {
+      "command": "tessl",
+      "args": ["mcp", "start"]
+    }
+  },
+  "mcpServersInactive": {
+    "Clerk": {
+      "command": "npx",
+      "args": ["@clerk/clerk-mcp@latest"],
+      "env": {
+        "CLERK_API_KEY": "YOUR_CLERK_SECRET_KEY"
+      }
+    },
+    "stitch": {
+      "command": "npx",
+      "args": ["@_davideast/stitch-mcp", "proxy"]
+    },
+    "firebase": {
+      "command": "npx",
+      "args": ["-y", "firebase-tools@latest", "mcp"]
+    },
+    "notionApi": {
+      "command": "npx",
+      "args": ["-y", "@notionhq/notion-mcp-server"],
+      "env": {
+        "NOTION_TOKEN": "YOUR_NOTION_TOKEN"
+      }
+    }
+  }
+}
+

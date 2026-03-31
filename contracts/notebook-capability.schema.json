@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Notebook Capability Contract",
+  "type": "object",
+  "required": ["primaryMode", "secondaryMode", "operations"],
+  "properties": {
+    "primaryMode": {
+      "type": "string",
+      "enum": ["claude-desktop-mcp"]
+    },
+    "secondaryMode": {
+      "type": "string",
+      "enum": ["local-skill-wrapper"]
+    },
+    "operations": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "string",
+        "enum": [
+          "auth.status",
+          "library.list",
+          "library.search",
+          "library.add",
+          "library.activate",
+          "query.ask",
+          "query.followup"
+        ]
+      }
+    }
+  },
+  "additionalProperties": false
+}
+
