@@ -14,8 +14,8 @@
 ### 1. Core Architect
 
 - Question: Does the new split really isolate reusable runtime from operator state?
-- Objection: If the workspace does not receive verification scripts and spec artifacts, it becomes a partial clone instead of a full operator environment.
-- Resolution: The bootstrap was expanded to copy `scripts`, `tests`, `specs`, and `adapters`, and the workspace received a dedicated `refresh-from-core.sh`.
+- Objection: If refresh and bootstrap blur the boundary, the workspace can become its own drifting source of truth.
+- Resolution: The bootstrap now copies the full operational payload without forcing packs by default, preserves an existing workspace README, and seeds a protective `.gitignore` before local snapshots. The workspace refresh now uses a dirty-tree guard and syncs the `scripts/` directory without creating root-level duplicates.
 
 ### 2. Desktop Runtime Reviewer
 
@@ -33,13 +33,13 @@
 
 - Question: Can shared sync over-copy sensitive or stale files?
 - Objection: A naive directory copy would honor allowlist but still move denied nested files.
-- Resolution: `scripts/sync-shared.sh` now resolves allowlisted files individually and applies the denylist per relative path before copying.
+- Resolution: `scripts/sync-shared.sh` now resolves allowlisted files individually and aborts on the first denylisted relative path instead of silently copying around it.
 
 ### 5. Operator Experience Reviewer
 
 - Question: Can Javier use the workspace without reading the core repo first?
-- Objection: Without a local README, logs, QA plan, and refresh command, the workspace would not be self-sufficient.
-- Resolution: The workspace now carries its own README, logs, QA plan, copied tests, and local refresh flow.
+- Objection: Without a local README, logs, QA plan, refresh guardrails, and verification evidence, the workspace would not be self-sufficient.
+- Resolution: The workspace now carries its own README, logs, QA plan, copied tests, local refresh flow, and recorded verification evidence from the two implementation iterations.
 
 ### 6. Skeptic of Complexity
 
@@ -50,4 +50,3 @@
 ## Freeze Result
 
 No unresolved critical objection remains for the current baseline. The second iteration must rerun refresh plus verification to confirm that the hardened scripts remain stable.
-

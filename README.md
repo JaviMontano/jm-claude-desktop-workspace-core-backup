@@ -25,6 +25,7 @@ This repository separates reusable runtime from local operator state. It is the 
 ## Quick Start
 
 1. Run `sh scripts/bootstrap-workspace.sh /absolute/path/to/workspace-instance`.
+   Optional: set `BOOTSTRAP_INCLUDE_PACKS=1` to seed the optional domain packs into the target workspace.
 2. Review or update local snapshots inside the target workspace under `local/profiles/`.
 3. Run `scripts/check-capabilities.sh`.
 4. Run `python3 -m unittest discover -s tests`.
